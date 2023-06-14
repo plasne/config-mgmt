@@ -4,10 +4,15 @@ using dotenv.net;
 using CSE.ConfigMgmt;
 using FluentResults;
 
+/// <inheritdoc />
 public class Config : IConfig
 {
     private readonly CSE.ConfigMgmt.IConfig config;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Config"/> class.
+    /// </summary>
+    /// <param name="config">The library configuration.</param>
     public Config(CSE.ConfigMgmt.IConfig config)
     {
         this.config = config;
@@ -34,33 +39,45 @@ public class Config : IConfig
             return s.ToUpper();
         }).TryGet().Log().Value;
         this.KeyVaultExample = config.AsString("KEY_VAULT_EXAMPLE").TryGet().Resolve().Log().Value;
-        this.AppServiceExample = config.AsString("APP_SERVICE_EXAMPLE").TryGet("KEY_IN_VAULT").Log().Value;
+        this.AppConfigExample = config.AsString("APP_SERVICE_EXAMPLE").TryGet("KEY_IN_VAULT").Log().Value;
     }
 
+    /// <inheritdoc />
     public string StringExample { get; }
 
+    /// <inheritdoc />
     public int IntegerExample { get; }
 
+    /// <inheritdoc />
     public decimal DecimalExample { get; }
 
+    /// <inheritdoc />
     public bool BooleanExample0 { get; }
 
+    /// <inheritdoc />
     public bool BooleanExample1 { get; }
 
+    /// <inheritdoc />
     public string[] StringArrayExample { get; }
 
+    /// <inheritdoc />
     public Colors ColorExample { get; }
 
+    /// <inheritdoc />
     public int TrySetExample { get; }
 
+    /// <inheritdoc />
     public string TransformExample { get; }
 
+    /// <inheritdoc />
     public string KeyVaultExample { get; }
 
-    public string AppServiceExample { get; }
+    /// <inheritdoc />
+    public string AppConfigExample { get; }
 
-    public void Validate()
+    /// <inheritdoc />
+    public Result Validate()
     {
-        this.config.Validate();
+        return this.config.Validate();
     }
 }

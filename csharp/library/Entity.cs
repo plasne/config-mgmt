@@ -179,7 +179,7 @@ public class Entity<T> : IEntity
     {
         foreach (var resolver in this.serviceProvider.GetServices<IResolver<T>>())
         {
-            this.values = this.values
+            this.values = this.values?
                 .Select(resolver.Resolve)
                 .Where(result => result.IsSuccess)
                 .Select(result => result.Value)
@@ -199,7 +199,7 @@ public class Entity<T> : IEntity
         {
             return "(not set)";
         }
-        else if (typeof(T) == typeof(string[]))
+        else if (typeof(T) == typeof(string[]) && this.HasValue)
         {
             return string.Join(", ", this.Value as string[]);
         }
@@ -213,7 +213,7 @@ public class Entity<T> : IEntity
         }
         else
         {
-            return this.dflt.ToString();
+            return this.dflt?.ToString();
         }
     }
 

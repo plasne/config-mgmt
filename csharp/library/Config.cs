@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using FluentResults;
 
 /// <summary>
 /// An implementation of the configuration system.
@@ -70,14 +71,18 @@ public class Config : IConfig
     }
 
     /// <inheritdoc />
-    public void Validate()
+    public Result Validate()
     {
+        var result = new Result();
+
         foreach (var entity in this.entities)
         {
             if (entity.IsRequired && !entity.HasValue)
             {
-                throw new ValidationException(entity.Key);
+                result.WithError($"Configuration key '{entity.Key}' is required, but missing.");
             }
         }
+
+        return result;
     }
 }

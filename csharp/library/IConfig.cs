@@ -1,6 +1,7 @@
 namespace CSE.ConfigMgmt;
 
 using System;
+using FluentResults;
 
 /// <summary>
 /// Interface for the configuration system.
@@ -54,5 +55,6 @@ public interface IConfig
     /// <summary>
     /// Validates the configuration.
     /// </summary>
-    public void Validate();
+    /// <returns>The result of the validation.</returns>
+    public Result Validate();
 }
