@@ -1,4 +1,4 @@
-namespace CSE.ConfigMgmt.Resolvers;
+namespace CSE.ConfigMgmt.Transforms;
 
 using System;
 using System.Diagnostics;
@@ -10,19 +10,19 @@ using Microsoft.Extensions.Logging;
 /// <summary>
 /// Resolves a Key Vault URL to a secret value.
 /// </summary>
-public class AzureKeyVaultResolver : IResolver<string>
+public class AzureKeyVaultTransform : IAzureKeyVaultTransform
 {
     private readonly DefaultAzureCredential credential;
-    private readonly ILogger<AzureKeyVaultResolver> logger;
+    private readonly ILogger<AzureKeyVaultTransform> logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AzureKeyVaultResolver"/> class.
+    /// Initializes a new instance of the <see cref="AzureKeyVaultTransform"/> class.
     /// </summary>
     /// <param name="credential">An optional DefaultAzureCredential object. If not specified, a DefaultAzureCredential object
     /// will be created supporting all credential options. As this can be quite slow, you are encouraged to inject your own
     /// DefaultAzureCredential object into DI.</param>
     /// <param name="logger">An optional ILogger.</param>
-    public AzureKeyVaultResolver(DefaultAzureCredential credential = null, ILogger<AzureKeyVaultResolver> logger = null)
+    public AzureKeyVaultTransform(DefaultAzureCredential credential = null, ILogger<AzureKeyVaultTransform> logger = null)
     {
         this.credential = credential ?? new DefaultAzureCredential(
             new DefaultAzureCredentialOptions()

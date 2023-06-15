@@ -109,7 +109,7 @@ public static class Extensions
             throw new ArgumentException("The min value cannot be greater than the max value.");
         }
 
-        entity.Values = entity.Values?.Select(val =>
+        entity.Transform(val =>
         {
             if (val < min)
             {
@@ -121,7 +121,7 @@ public static class Extensions
             }
 
             return val;
-        }).ToList();
+        });
 
         return entity;
     }
@@ -140,7 +140,7 @@ public static class Extensions
             throw new ArgumentException("The min value cannot be greater than the max value.");
         }
 
-        entity.Values = entity.Values?.Select(val =>
+        entity.Transform(val =>
         {
             if (val < min)
             {
@@ -152,7 +152,7 @@ public static class Extensions
             }
 
             return val;
-        }).ToList();
+        });
 
         return entity;
     }

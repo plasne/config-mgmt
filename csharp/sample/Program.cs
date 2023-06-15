@@ -6,9 +6,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using CSE.ConfigMgmt;
 using CSE.ConfigMgmt.Getters;
-using CSE.ConfigMgmt.Resolvers;
 using Azure.Identity;
 using Azure.Data.AppConfiguration;
+using CSE.ConfigMgmt.Transforms;
 
 /// <summary>
 /// The application.
@@ -65,7 +65,7 @@ internal class Program
                         ExcludeInteractiveBrowserCredential = true,
                     });
                 }); // this is optional, but makes it faster by specifying how it can authenticate
-                services.AddSingleton<IResolver<string>, AzureKeyVaultResolver>();
+                services.AddSingleton<IAzureKeyVaultTransform, AzureKeyVaultTransform>();
 
                 // add application services
                 services.AddSingleton<IConfig, Config>();
