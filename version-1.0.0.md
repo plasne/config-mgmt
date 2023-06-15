@@ -24,7 +24,7 @@ In all of the above, `<key>` is a string that should uniquely identify this conf
 
 The `Config` implementation should track the `Entity` instances that are created so that they can be used for the following functionality:
 
-- `Validate()`: This method validates all `Entity` instances that have been created using this `Config`. Validation of an `Entity` will fail if `Require()` and `HasValue` is FALSE. Use of `SetTransform()` could ensure that values are not set for undesireable data. Ideally, the implementation of `Validate()` would return a "result" or "error" encapsulating everything that is wrong, however, implementations may simply throw an exception if that is more appropriate for the language.
+- `Validate()`: This method validates all `Entity` instances that have been created using this `Config`. Validation of an `Entity` should fail if `Require()` and `HasValue` is FALSE. Use of `SetTransform()` could ensure that values are not set for undesireable data. Ideally, the implementation of `Validate()` would return a "result" or "error" encapsulating everything that is wrong, however, implementations may simply throw an exception if that is more appropriate for the language.
 
 ## Entity
 
@@ -42,11 +42,11 @@ The following properties are available on the `Entity` class:
 
 The following methods are available on the `Entity` class:
 
-- `TryGet(<optional-key>)`: This method attempts to get the value of the configuration value. If the optional key is provided (string), it will attempt to get the value from the `Entity` instance with the provided key. If the optional key is not provided, it will attempt to get the value from the `Entity` instance with the `Key` property of this `Entity` instance.
+- `TryGet(<optional-key>)`: This method attempts to get the value of the configuration value. If the optional key is provided (string), it will attempt to get the value using the provided key. If the optional key is not provided, it will attempt to get the value using the `Key` property of this `Entity` instance.
 
-    `TryGet()` should work by attempting to get a value from each Getter given a key.
+    `TryGet()` on an `Entity` should work by attempting `TryGet()` on each `Getter` until a valid value is returned. Once a value is obtained, no more calls are made to `Getters`, therefore the order is important (ex. if GetterA has the appropriate key/value pair, GetterB will not be asked).
 
-    Multiple `TryGet()` calls can be specified. Internally, each call should record a value 
+    Multiple `TryGet()` calls can be chained. For instance, you could try `TryGet("MoreSpecificKey").TryGet("LessSpecificKey")`. If a "MoreSpecificKey" exists in any of the `Getters`, then the `Entity` should record that value. If a "LessSpecificKey" exists in any of the `Getters`, then the `Entity` should record that value. Internally, each call should record a value 
 
 All of the above methods return the `Entity` instance. This allows the user to chain the methods together (typically ending in Value). For example:
 
@@ -61,3 +61,28 @@ The above example does the following:
 1. Requires that a value has been set for this configuration value.
 1. Logs the value of this configuration value.
 1. Gets the value of this configuration value.
+
+## Getter
+
+An implementation of a `Getter` provides a way to determine a value given a key. It is expected that any language implementation of this library will provide a default `Getter` implementation that will read values from environment variables. Other implementations may also be appropriate, for example, getting configuration from Azure App Configuration.
+
+The proposed interface for a Getter in C# is below, however, other implementations may be more appropriate for other languages.
+
+```csharp
+namespace CSE.ConfigMgmt.Getters;
+
+using FluentResults;
+
+/// <summary>
+/// Interface for a configuration value getter.
+/// </summary>
+public interface IGetter
+{
+    /// <summary>
+    /// Attempts to get the value for the specified key.
+    /// </summary>
+    /// <param name="key">The key to get.</param>
+    /// <returns>The value for the specified key wrapped in a Result.</returns>
+    public Result<string> TryGet(string key);
+}
+```

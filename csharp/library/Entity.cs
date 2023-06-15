@@ -84,9 +84,9 @@ public class Entity<T> : IEntity
         foreach (var getter in this.serviceProvider.GetServices<IGetter>())
         {
             var result = getter.TryGet(key ?? this.key);
-            if (result.IsSuccess && this.TrySetValue(result.Value))
+            if (result.IsSuccess)
             {
-                break;
+                this.TrySetValue(result.Value);
             }
         }
 

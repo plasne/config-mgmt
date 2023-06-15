@@ -27,6 +27,6 @@ The schematic will be versioned so that it can be clear to users of this solutio
 
 ## Schematics
 
-The schematics will serve as a guide on how to implement the solution across languages. In general, capabilities and syntax should be as consistent as possible. It will not address how components are registered for use (ex. dependency injection) or how they are configured (ex. the URL of an AppConfig instance) as these can vary per language. There will be language-specific guides for these topics.
+The schematics will serve as a guide on how to implement the solution across languages. In general, capabilities and syntax should be as consistent as possible. It will not address how components are registered for use (ex. dependency injection), how they are configured (ex. the URL of an AppConfig instance), how they authenticate to external services, etc. as these can vary per language. There will be language-specific guides for these topics.
 
 - [Version 1.0.0](./version-1.0.0.md)
